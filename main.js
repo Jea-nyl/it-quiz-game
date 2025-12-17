@@ -49,136 +49,117 @@ const questions = {
   }
 };
 
-// 🔊 PLAY CATEGORY SOUND
-function playCategorySound(cat) {
+// 🔊 Play category sound
+function playCategorySound(cat){
   const audio = document.getElementById("sound-" + cat);
-  if (audio) {
-    audio.currentTime = 0;
-    audio.play();
-  }
+  if(audio){ audio.currentTime = 0; audio.play();}
 }
 
-// 🎯 CATEGORY SPINNER
-function spinCategory() {
-  if (questionNumber >= TOTAL_QUESTIONS) {
-    showFinalScreen();
-    return;
-  }
+// 🎯 Spin category
+function spinCategory(){
+  if(questionNumber >= TOTAL_QUESTIONS){ showFinalScreen(); return; }
 
   canAnswer = false;
   questionNumber++;
   counterEl.textContent = `Question ${questionNumber} / ${TOTAL_QUESTIONS}`;
 
   let i = 0;
-  const spin = setInterval(() => {
+  const spin = setInterval(()=>{
     categoryEl.textContent = "🎯 " + categories[i % categories.length];
     i++;
   }, 100);
 
-  setTimeout(() => {
+  setTimeout(()=>{
     clearInterval(spin);
-    const cat = categories[Math.floor(Math.random() * categories.length)];
+    const cat = categories[Math.floor(Math.random()*categories.length)];
     categoryEl.textContent = "Category: " + cat;
     playCategorySound(cat);
     loadQuestion(cat);
   }, 2000);
 }
 
-// LOAD QUESTION
-function loadQuestion(cat) {
+// Load question
+function loadQuestion(cat){
   const q = questions[cat];
   currentAnswer = q.answer;
-
   questionEl.textContent = q.q;
   choicesEl.innerHTML = "";
-
-  q.choices.forEach((c, i) => {
+  q.choices.forEach((c,i)=>{
     const d = document.createElement("div");
     d.className = "choice";
-    d.textContent = String.fromCharCode(65+i) + ". " + c;
+    d.textContent = String.fromCharCode(65+i)+". "+c;
     choicesEl.appendChild(d);
   });
-
   startAnswerTimer();
 }
 
-// ⏱️ 10s ANSWER TIMER
-function startAnswerTimer() {
+// 10s timer
+function startAnswerTimer(){
   let time = 10;
   canAnswer = true;
-  timerEl.textContent = "⏱️ " + time;
-
+  timerEl.textContent = "⏱️ "+time;
   clearInterval(answerTimer);
-  answerTimer = setInterval(() => {
+  answerTimer = setInterval(()=>{
     time--;
-    timerEl.textContent = "⏱️ " + time;
-    if (time <= 0) {
+    timerEl.textContent = "⏱️ "+time;
+    if(time <= 0){
       clearInterval(answerTimer);
       reveal(false);
     }
-  }, 1000);
+  },1000);
 }
 
-// 🔥 ESP32 BUTTON LISTENER
-onSnapshot(controlRef, snap => {
-  if (!snap.exists()) return;
+// Listen to ESP32 buttons
+onSnapshot(controlRef, snap=>{
+  if(!snap.exists()) return;
   const data = snap.data();
-
-  if (data.button && canAnswer) {
-    canAnswer = false;
-    updateDoc(controlRef, { button: "" });
-    reveal(data.button === currentAnswer);
+  if(data.button && canAnswer){
+    canAnswer=false;
+    updateDoc(controlRef,{button:""});
+    reveal(data.button===currentAnswer);
   }
 });
 
-// ⏳ SUSPENSE + RESULT
-function reveal(correct) {
+// Reveal answer + suspense
+function reveal(correct){
   clearInterval(answerTimer);
-
   let suspense = 5;
-  suspenseTimer = setInterval(() => {
-    timerEl.textContent = "⏳ " + suspense;
+  suspenseTimer = setInterval(()=>{
+    timerEl.textContent="⏳ "+suspense;
     suspense--;
-
-    if (suspense < 0) {
+    if(suspense<0){
       clearInterval(suspenseTimer);
-
-      if (correct) {
-        document.body.style.background = "#2ecc71";
+      if(correct){
+        document.body.style.background="#2ecc71";
         score++;
-        updateDoc(controlRef, { result: "GREEN" });
+        updateDoc(controlRef,{result:"GREEN"});
       } else {
-        document.body.style.background = "#e74c3c";
-        updateDoc(controlRef, { result: "RED" });
+        document.body.style.background="#e74c3c";
+        updateDoc(controlRef,{result:"RED"});
       }
-
-      scoreEl.textContent = "Score: " + score;
-
-      setTimeout(() => {
-        document.body.style.background = "#ffffff";
+      scoreEl.textContent="Score: "+score;
+      setTimeout(()=>{
+        document.body.style.background="#ffffff";
         spinCategory();
-      }, 1200);
+      },1200);
     }
-  }, 1000);
+  },1000);
 }
 
-// 🏁 FINAL SCORE SCREEN
-function showFinalScreen() {
-  canAnswer = false;
-
-  questionEl.textContent = "🎉 GAME OVER 🎉";
-  categoryEl.textContent = "Byte by Byte: IT Quiz Challenge!";
-  timerEl.textContent = "";
-  counterEl.textContent = "";
-
-  choicesEl.innerHTML = `
+// Final Score
+function showFinalScreen(){
+  canAnswer=false;
+  questionEl.textContent="🎉 GAME OVER 🎉";
+  categoryEl.textContent="Byte by Byte: IT Quiz Challenge!";
+  timerEl.textContent="";
+  counterEl.textContent="";
+  choicesEl.innerHTML=`
     <h2>Your Final Score</h2>
     <h1>${score} / ${TOTAL_QUESTIONS}</h1>
     <p>Great job! 👏</p>
   `;
-
   document.getElementById("sound-win").play();
 }
 
-// 🚀 START GAME
+// Start game
 spinCategory();
