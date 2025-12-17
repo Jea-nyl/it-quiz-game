@@ -9,6 +9,13 @@ const choicesEl = document.getElementById("choices");
 const timerEl = document.getElementById("timer");
 const scoreEl = document.getElementById("score");
 
+// WebSocket for ESP32
+const ws = new WebSocket("ws://YOUR_ESP32_IP:81"); // Replace with your ESP32 IP
+ws.onmessage = (event) => {
+  const pressed = event.data; // "A", "B", "C", "D"
+  selectAnswer(pressed);
+};
+
 let questions = [];
 let currentQuestionIndex = 0;
 let currentScore = 0;
@@ -64,7 +71,7 @@ function showQuestion() {
     div.id = String.fromCharCode(65 + i);
     choicesEl.appendChild(div);
 
-    // Add click listener (simulate ESP32 button)
+    // Click for testing in browser
     div.addEventListener("click", () => selectAnswer(div.id));
   });
 
@@ -94,10 +101,11 @@ function selectAnswer(selected) {
 
   // Highlight selected choice
   if (selected) {
-    document.getElementById(selected).classList.add("highlight");
+    const selDiv = document.getElementById(selected);
+    if(selDiv) selDiv.classList.add("highlight");
   }
 
-  // 5s suspense before showing correct/incorrect
+  // 5s suspense
   let suspense = 5;
   suspenseTimer = setInterval(() => {
     suspense--;
@@ -111,21 +119,20 @@ function selectAnswer(selected) {
 
 // Reveal answer
 function revealAnswer(selected, correct) {
-  // Flash background
   if (selected === correct) {
     document.body.style.backgroundColor = "green";
     currentScore++;
+    ws.send("GREEN"); // ESP32 green LED + buzzer
   } else {
     document.body.style.backgroundColor = "red";
+    ws.send("RED"); // ESP32 red LED + buzzer
   }
 
   scoreEl.textContent = `Score: ${currentScore}`;
 
-  // Highlight correct answer
-  if (correct) {
-    const correctDiv = document.getElementById(correct);
-    if (correctDiv) correctDiv.style.border = "3px solid gold";
-  }
+  // Highlight correct
+  const correctDiv = document.getElementById(correct);
+  if (correctDiv) correctDiv.style.border = "3px solid gold";
 
   setTimeout(() => {
     document.body.style.backgroundColor = "white";
