@@ -12,7 +12,7 @@ const scoreEl = document.getElementById("score");
 const leaderboardEl = document.getElementById("leaderboard");
 
 // ESP32 WebSocket
-const ws = new WebSocket("ws://YOUR_ESP32_IP:81");
+const ws = new WebSocket("ws://192.168.1.105:81");
 
 let playerName = "UNKNOWN";
 let score = 0;
