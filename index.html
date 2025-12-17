@@ -22,7 +22,7 @@
 
 body {
   margin: 0;
-  background: linear-gradient(135deg, #e0f2fe, #f8fafc);
+  background: var(--bg);
   color: #0f172a;
   transition: background 0.3s;
 }
@@ -55,7 +55,6 @@ main {
   gap: 20px;
 }
 
-/* ================= GAME CARD ================= */
 .card {
   background: var(--card);
   border-radius: 14px;
@@ -100,11 +99,6 @@ main {
   transform: translateY(-2px);
 }
 
-.choice.highlight {
-  background: #fde68a;
-  border-color: #f59e0b;
-}
-
 .status-bar {
   display: flex;
   justify-content: space-between;
@@ -112,7 +106,6 @@ main {
   font-weight: bold;
 }
 
-/* ================= LEADERBOARD ================= */
 .leaderboard {
   background: linear-gradient(180deg, #ffffff, #f1f5f9);
 }
@@ -134,7 +127,6 @@ main {
   font-weight: 500;
 }
 
-/* ================= FOOTER ================= */
 footer {
   margin-top: 30px;
   text-align: center;
@@ -142,7 +134,6 @@ footer {
   color: #475569;
 }
 
-/* ================= RESPONSIVE ================= */
 @media(max-width: 900px){
   main {
     grid-template-columns: 1fr;
@@ -164,10 +155,9 @@ footer {
   <div class="card">
     <h2>🎮 Quiz Arena</h2>
     <div id="category">Waiting for category...</div>
+    <div id="counter"></div>
     <div id="question">Press a button to begin</div>
-
     <div id="choices"></div>
-
     <div class="status-bar">
       <div id="timer">⏱️ Time: 0</div>
       <div id="score">⭐ Score: 0</div>
@@ -187,6 +177,14 @@ footer {
 <footer>
   <p>Developed using ESP32, Firebase Firestore, and Web Technologies</p>
 </footer>
+
+<!-- SOUND EFFECTS -->
+<audio id="sound-Programming" src="sounds/programming.mp3"></audio>
+<audio id="sound-Networking" src="sounds/networking.mp3"></audio>
+<audio id="sound-Hardware" src="sounds/hardware.mp3"></audio>
+<audio id="sound-Cybersecurity" src="sounds/cybersecurity.mp3"></audio>
+<audio id="sound-Databases" src="sounds/databases.mp3"></audio>
+<audio id="sound-win" src="sounds/win.mp3"></audio>
 
 <script type="module" src="firebase.js"></script>
 <script type="module" src="main.js"></script>
