@@ -1,30 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>ESP32 Quiz Game</title>
+<title>Byte by Byte: IT Quiz Challenge!</title>
 <style>
   body { font-family: Arial; text-align: center; transition: background-color 0.3s; }
-  #question { font-size: 20px; margin: 15px; }
-  .choice { margin: 5px; padding: 10px; border: 2px solid black; display: inline-block; cursor: pointer; }
-  .highlight { background-color: yellow; }
-  #timer { font-size: 18px; margin: 10px; }
-  #score { font-size: 18px; margin: 10px; }
-  #spinner { font-size: 24px; margin: 20px; }
+  .choice { padding:10px; border:2px solid black; margin:5px; display:inline-block; }
+  .highlight { background: yellow; }
 </style>
 </head>
 <body>
 
-<h1>ESP32 Quiz Game</h1>
+<h1>🧠 Byte by Byte: IT Quiz Challenge!</h1>
 
-<h2>Category:</h2>
-<div id="spinner">🎯</div>
-<button id="spinBtn">Spin</button>
+<h2 id="category">Waiting...</h2>
+<h3 id="question"></h3>
 
-<div id="question">Waiting to start...</div>
 <div id="choices"></div>
-<div id="timer">Time left: 0s</div>
-<div id="score">Score: 0</div>
+
+<h3 id="timer"></h3>
+<h3 id="score"></h3>
+
+<h2>🏆 Leaderboard</h2>
+<ol id="leaderboard"></ol>
 
 <script type="module" src="firebase.js"></script>
 <script type="module" src="main.js"></script>
