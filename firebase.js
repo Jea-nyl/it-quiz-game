@@ -1,9 +1,8 @@
 // firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// 🔥 REPLACE THESE WITH YOUR OWN FIREBASE CONFIG
+// 🔑 Replace with your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDbzlVPocyVLCrc9eA-57hoLCv81SsSv1Q",
   authDomain: "it-quiz-game-49bb9.firebaseapp.com",
@@ -15,5 +14,4 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
 export const db = getFirestore(app);
