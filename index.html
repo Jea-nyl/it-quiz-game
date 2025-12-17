@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Firebase HTML Test</title>
+<meta charset="UTF-8">
+<title>ESP32 Quiz Game</title>
+<style>
+  body { font-family: Arial; text-align: center; transition: background-color 0.3s; }
+  #question { font-size: 20px; margin: 15px; }
+  .choice { margin: 5px; padding: 10px; border: 2px solid black; display: inline-block; cursor: pointer; }
+  .highlight { background-color: yellow; }
+  #timer { font-size: 18px; margin: 10px; }
+  #score { font-size: 18px; margin: 10px; }
+  #spinner { font-size: 24px; margin: 20px; }
+</style>
 </head>
 <body>
 
-  <h1>Firebase Connected ✅</h1>
+<h1>ESP32 Quiz Game</h1>
 
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
-  <button id="loginBtn">Login</button>
-  <button id="registerBtn">Register</button>
+<h2>Category:</h2>
+<div id="spinner">🎯</div>
+<button id="spinBtn">Spin</button>
 
-  <p id="status"></p>
+<div id="question">Waiting to start...</div>
+<div id="choices"></div>
+<div id="timer">Time left: 0s</div>
+<div id="score">Score: 0</div>
 
-  <!-- IMPORTANT: type="module" -->
-  <script type="module" src="main.js"></script>
+<script type="module" src="firebase.js"></script>
+<script type="module" src="main.js"></script>
+
 </body>
 </html>
